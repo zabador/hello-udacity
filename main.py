@@ -1,21 +1,23 @@
-""" main.py is the top level script.
+import webapp2
 
-Return "Hello World" at the root URL.
+form="""
+<form action='/testform'>
+	<input name='q'>
+	<input type='submit'>
+</form>
 """
+class MainPage(webapp2.RequestHandler):
+	def get(self):
+		self.response.out.write(form)
 
-import os
-import sys
+class TestHandler(webapp2.RequestHandler):
+	def get(self):
+		#q = self.request.get("q")
+		#self.response.out.write(q)
+		self.response.headers['Content-Type'] = 'text/plain'
+		self.response.out.write(self.request)
 
-# sys.path includes 'server/lib' due to appengine_config.py
-from flask import Flask
-from flask import render_template
-app = Flask(__name__.split('.')[0])
-
-
-@app.route('/')
-@app.route('/<name>')
-def hello(name=None):
-  """ Return hello template at application root URL."""
-  return render_template('hello.html', name=name)
-
-
+app = webapp2.WSGIApplication([
+	('/', MainPage),
+	('/testform', TestHandler)
+], debug=True)
