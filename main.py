@@ -1,4 +1,5 @@
 import webapp2
+import cgi
 
 months = ['January',
 		'February',
@@ -43,7 +44,7 @@ form="""
 class MainPage(webapp2.RequestHandler):
 
 	def write_form(self, error="", month="", day="", year=""):
-		self.response.out.write(form % {"error": error, "month": month, "day": day, "year": year})
+		self.response.out.write(form % {"error": cgi.escape(error), "month": cgi.escape(month), "day": cgi.escape(day), "year": cgi.escape(year)})
 	def get(self):
 		self.response.out.write(form)
 	def post(self):
